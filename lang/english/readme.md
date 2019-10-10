@@ -1,8 +1,6 @@
 # SPACEX API Viewer (Backend + Frontend)
-[Português](readme.md) | [English](lang/english/readme.md)
-
-
 SPACEX API Viewer is a complete API(Django Rest Framework) and Frontend(React) to get better visual undestanding of SPACEX API.
+[Português](readme.md) | [English](lang/english/readme.md)
 
 ## Instalation
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the requirements.
