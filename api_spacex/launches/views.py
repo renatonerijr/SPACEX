@@ -5,12 +5,55 @@ from launches.serializers import APISerializer
 import requests
 import io
 
-class LatestLaunche(APIView):
+
+class LatestLaunch(APIView):
 
     def __init__(self):
         self.url = 'https://api.spacexdata.com/v3/launches/{}'
 
+    def get(self, format=None):
+
+        # Request from SPACEX API
+        req = requests.get(self.url.format("latest"))
+
+        # Parse JSON to a dict
+        data = req.json()
+        serialized_request = FilterAPI().serialize_response(data)
+
+        #Return data
+        return Response(serialized_request)
+
+class NextLaunch(APIView):
+
+    def __init__(self):
+        self.url = 'https://api.spacexdata.com/v3/launches/{}'
+
+    def get(self, format=None):
+
+        # Request from SPACEX API
+        req = requests.get(self.url.format("next"))
+
+        # Parse JSON to a dict
+        data = req.json()
+        serialized_request = FilterAPI().serialize_response(data)
+
+        #Return data
+        return Response(serialized_request)
+
+class FilterAPI():
+
     def serialize_response(self, data):
+        # Serialize it
+        newData = self.filterJson(data)
+        data = APISerializer(data=newData)
+
+        # Return validated_data or error if is'nt valid
+        if data.is_valid():
+            return data.validated_data
+        else:
+            return data.errors
+
+    def filterJson(self, data):
         # Create a new dict with specific info from mission
         rocket = data["rocket"]
         first_stage = rocket["first_stage"]["cores"][0]
@@ -41,25 +84,4 @@ class LatestLaunche(APIView):
                     "reddit_link": data["links"]["reddit_campaign"],
                     "details": data["details"]
                   }
-
-        # Serialize it
-        data = APISerializer(data=newData)
-
-        # Return validated_data or error if is'nt valid
-        if data.is_valid():
-            return data.validated_data
-        else:
-            return data.errors
-
-    def get(self, format=None):
-
-        # Request from SPACEX API
-        req = requests.get(self.url.format("latest"))
-
-        # Parse JSON to a dict
-        data = req.json()
-        print(type(data))
-        serialized_request = self.serialize_response(data)
-
-        #Return data
-        return Response(serialized_request)
+        return newData
