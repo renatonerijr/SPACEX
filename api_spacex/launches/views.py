@@ -1,57 +1,107 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
-from launches.serializers import APISerializer
+from rest_framework.renderers import JSONRenderer
 import requests
 import io
 
+url = 'https://api.spacexdata.com/v3/launches/{}'
 
 class LatestLaunch(APIView):
 
-    def __init__(self):
-        self.url = 'https://api.spacexdata.com/v3/launches/{}'
-
     def get(self, format=None):
 
         # Request from SPACEX API
-        req = requests.get(self.url.format("latest"))
+        req = requests.get(url.format("latest"))
 
         # Parse JSON to a dict
         data = req.json()
-        serialized_request = FilterAPI().serialize_response(data)
+        newData = FilterAPI().filterJson(data)
 
         #Return data
-        return Response(serialized_request)
+        return Response(newData)
 
 class NextLaunch(APIView):
 
-    def __init__(self):
-        self.url = 'https://api.spacexdata.com/v3/launches/{}'
+    def get(self, format=None):
+
+        # Request from SPACEX API
+        req = requests.get(url.format("next"))
+
+        if req.status_code == 500:
+            return Response({"message":"SPACEX API Error!", "success":False})
+
+        # Parse JSON to a dict
+        data = req.json()
+
+        # Filter JSON with specific info
+        newData = FilterAPI().filterJson(data)
+
+        #Return data
+        return Response(newData)
+
+class UpcomingLaunches(APIView):
 
     def get(self, format=None):
 
         # Request from SPACEX API
-        req = requests.get(self.url.format("next"))
+        req = requests.get(url.format("upcoming"))
+
+        if req.status_code == 500:
+            return Response({"message":"SPACEX API Error!", "success":False})
+
+        # Parse JSON to a list
+        data_list = req.json()
+        newData = []
+        # Filter JSON with specific info
+        for data in data_list:
+            newData.append(FilterAPI().filterJson(data))
+
+        #Return data
+        return Response(newData)
+
+class PastLaunches(APIView):
+
+    def get(self, format=None):
+
+        # Request from SPACEX API
+        req = requests.get(url.format("past"))
+
+        if req.status_code == 500:
+            return Response({"message":"SPACEX API Error!", "success":False})
+
+        # Parse JSON to a list
+        data_list = req.json()
+        newData = []
+        # Filter JSON with specific info
+        for data in data_list:
+            newData.append(FilterAPI().filterJson(data))
+
+        #Return data
+        return Response(newData)
+
+class OneLaunch(APIView):
+
+    def get(self, request, pk, format=None):
+        # Request from SPACEX API
+        req = requests.get(url.format(pk))
+
+        if req.status_code == 404:
+            return Response({"message":"Could'nt find any launch!", "success":False})
+
+        if req.status_code == 500:
+            return Response({"message":"SPACEX API Error!", "success":False})
 
         # Parse JSON to a dict
         data = req.json()
-        serialized_request = FilterAPI().serialize_response(data)
+
+        # Filter JSON with specific info
+        newData = FilterAPI().filterJson(data)
 
         #Return data
-        return Response(serialized_request)
+        return Response(newData)
 
 class FilterAPI():
-
-    def serialize_response(self, data):
-        # Serialize it
-        newData = self.filterJson(data)
-        data = APISerializer(data=newData)
-
-        # Return validated_data or error if is'nt valid
-        if data.is_valid():
-            return data.validated_data
-        else:
-            return data.errors
 
     def filterJson(self, data):
         # Create a new dict with specific info from mission
