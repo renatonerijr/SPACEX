@@ -7,27 +7,79 @@ class App extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            latest: {},
-            next: {},
-            upcoming: [],
-            past: []
+            latest: null,
+            next: null,
+            upcoming: null,
+            past: null
         }
 
     }
     componentDidMount() {
-      this.fecthLatest();
+      this.fetchLatest();
+      this.fetchNext();
+      this.fetchUpcoming();
+      this.fetchPast();
     }
 
-    async fecthLatest(){
+    fetchLatest(){
         const url = 'http://127.0.0.1:8000/launches/latest';
-        const response = await fetch(url, {method: 'GET', contenttypes: 'application/json'});
-        const json = await response.json()
-        console.log(json)
+        fetch(url, {method: 'GET', contenttypes: 'application/json'})
+            .then(response => response.json())
+            .then(jsonResponse => {
+                this.setState({latest: jsonResponse})
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
+
+    fetchNext(){
+        const url = 'http://127.0.0.1:8000/launches/next';
+        fetch(url, {method: 'GET', contenttypes: 'application/json'})
+            .then(response => response.json())
+            .then(jsonResponse => {
+                this.setState({next: jsonResponse})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    fetchUpcoming(){
+        const url = 'http://127.0.0.1:8000/launches/upcoming';
+        fetch(url, {method: 'GET', contenttypes: 'application/json'})
+            .then(response => response.json())
+            .then(jsonResponse => {
+                this.setState({upcoming: jsonResponse})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    fetchPast(){
+        const url = 'http://127.0.0.1:8000/launches/past';
+        fetch(url, {method: 'GET', contenttypes: 'application/json'})
+            .then(response => response.json())
+            .then(jsonResponse => {
+                this.setState({past: jsonResponse})
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
 
     render() {
         return (
-            <h1>Hello World!  </h1>
+            <div>
+
+                    {this.state.latest &&
+                        <div>
+
+                        </div>
+                    }
+             </div>
         );
     }
 }
