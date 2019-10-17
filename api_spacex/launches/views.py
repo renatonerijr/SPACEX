@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
+from rest_framework import status
 import requests
 import io
 
@@ -13,6 +14,9 @@ class LatestLaunch(APIView):
 
         # Request from SPACEX API
         req = requests.get(url.format("latest"))
+
+        if req.status_code > 500:
+            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a dict
         data = req.json()
@@ -28,8 +32,8 @@ class NextLaunch(APIView):
         # Request from SPACEX API
         req = requests.get(url.format("next"))
 
-        if req.status_code == 500:
-            return Response({"message":"SPACEX API Error!", "success":False})
+        if req.status_code > 500:
+            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a dict
         data = req.json()
@@ -47,12 +51,13 @@ class UpcomingLaunches(APIView):
         # Request from SPACEX API
         req = requests.get(url.format("upcoming"))
 
-        if req.status_code == 500:
-            return Response({"message":"SPACEX API Error!", "success":False})
+        if req.status_code > 500:
+            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a list
         data_list = req.json()
         newData = []
+
         # Filter JSON with specific info
         for data in data_list:
             newData.append(FilterAPI().filterJson(data))
@@ -67,12 +72,13 @@ class PastLaunches(APIView):
         # Request from SPACEX API
         req = requests.get(url.format("past"))
 
-        if req.status_code == 500:
-            return Response({"message":"SPACEX API Error!", "success":False})
+        if req.status_code > 500:
+            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a list
         data_list = req.json()
         newData = []
+        
         # Filter JSON with specific info
         for data in data_list:
             newData.append(FilterAPI().filterJson(data))
@@ -87,10 +93,10 @@ class OneLaunch(APIView):
         req = requests.get(url.format(pk))
 
         if req.status_code == 404:
-            return Response({"message":"Could'nt find any launch!", "success":False})
+            return Response({"message":"Could'nt find any launch!", "success":False}, status=status.HTTP_404_NOT_FOUND)
 
-        if req.status_code == 500:
-            return Response({"message":"SPACEX API Error!", "success":False})
+        if req.status_code > 500:
+            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a dict
         data = req.json()
