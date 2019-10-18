@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api_spacex',
     'rest_framework',
     'corsheaders',
+    'api_spacex',
 ]
 
 MIDDLEWARE = [

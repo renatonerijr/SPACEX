@@ -25,6 +25,7 @@ class LatestLaunch(APIView):
         #Return data
         return Response(newData)
 
+
 class NextLaunch(APIView):
 
     def get(self, format=None):
@@ -43,6 +44,7 @@ class NextLaunch(APIView):
 
         #Return data
         return Response(newData)
+
 
 class UpcomingLaunches(APIView):
 
@@ -65,6 +67,7 @@ class UpcomingLaunches(APIView):
         #Return data
         return Response(newData)
 
+
 class PastLaunches(APIView):
 
     def get(self, format=None):
@@ -78,13 +81,14 @@ class PastLaunches(APIView):
         # Parse JSON to a list
         data_list = req.json()
         newData = []
-        
+
         # Filter JSON with specific info
         for data in data_list:
             newData.append(FilterAPI().filterJson(data))
 
         #Return data
         return Response(newData)
+
 
 class OneLaunch(APIView):
 
@@ -106,6 +110,7 @@ class OneLaunch(APIView):
 
         #Return data
         return Response(newData)
+
 
 class FilterAPI():
 

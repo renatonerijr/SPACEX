@@ -1,5 +1,5 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('launches/', include('launches.urls'))
+    path('launches/', include('api_spacex.launches.urls'))
 ]
