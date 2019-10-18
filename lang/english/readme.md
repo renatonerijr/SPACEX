@@ -1,7 +1,7 @@
 # SPACEX API Viewer (Backend + Frontend)
 SPACEX API Viewer is a complete API(Django Rest Framework) and Frontend(React) to get better visual undestanding of SPACEX API.
 
-[Português](readme.md) | [English](lang/english/readme.md)
+[Português](../../readme.md) | [English](readme.md)
 
 ## Instalation
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the requirements.
@@ -26,11 +26,20 @@ Go to react_spacex and run React server
 npm start
 ```
 
-## Rodar os testes
-Vá para a pasta api_spacex e rode o comando:
+## Run tests
+Go to api_spacex and run in command line:
 
 ```bash
 python3 manage.py test api_spacex.launches
+```
+If all tests perform ok, you should see something like this:
+
+```bash
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 1.612s
+
+OK
 ```
 
 ## API
