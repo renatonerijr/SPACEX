@@ -36,6 +36,15 @@ Vá para a pasta api_spacex e rode o comando:
 ```bash
 python3 manage.py test api_spacex.launches
 ```
+Se todos os testes rodarem ok, você deve ver um resultado como esse:
+
+```bash
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 1.612s
+
+OK
+```
 
 ## API
 A API possui quatro endpoints:
