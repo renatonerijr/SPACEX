@@ -30,6 +30,13 @@ Vá para a pasta react_spacex e rode o servidor React
 npm start
 ```
 
+## Rodar os testes
+Vá para a pasta api_spacex e rode o comando:
+
+```bash
+python3 manage.py test api_spacex.launches
+```
+
 ## API
 A API possui quatro endpoints:
 
