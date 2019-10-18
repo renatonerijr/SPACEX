@@ -26,6 +26,13 @@ Go to react_spacex and run React server
 npm start
 ```
 
+## Rodar os testes
+Vá para a pasta api_spacex e rode o comando:
+
+```bash
+python3 manage.py test api_spacex.launches
+```
+
 ## API
 This API has four endpoints:
 
