@@ -12,11 +12,16 @@ class LatestLaunch(APIView):
 
     def get(self, format=None):
 
-        # Request from SPACEX API
-        req = requests.get(url.format("latest"))
+        try:
+            # Request from SPACEX API
+            req = requests.get(url.format("latest"))
 
-        if req.status_code > 500:
-            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if req.status_code > 500:
+                return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except Exception as e:
+            print(e)
+            return Response({"message":"Could'nt connect to SPACEX API Servers", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a dict
         data = req.json()
@@ -30,11 +35,16 @@ class NextLaunch(APIView):
 
     def get(self, format=None):
 
-        # Request from SPACEX API
-        req = requests.get(url.format("next"))
+        try:
+            # Request from SPACEX API
+            req = requests.get(url.format("next"))
 
-        if req.status_code > 500:
-            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if req.status_code > 500:
+                return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except Exception as e:
+            print(e)
+            return Response({"message":"Could'nt connect to SPACEX API Servers", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a dict
         data = req.json()
@@ -46,15 +56,21 @@ class NextLaunch(APIView):
         return Response(newData)
 
 
+
 class UpcomingLaunches(APIView):
 
     def get(self, format=None):
 
-        # Request from SPACEX API
-        req = requests.get(url.format("upcoming"))
+        try:
+            # Request from SPACEX API
+            req = requests.get(url.format("upcoming"))
 
-        if req.status_code > 500:
-            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if req.status_code > 500:
+                return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except Exception as e:
+            print(e)
+            return Response({"message":"Could'nt connect to SPACEX API Servers", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a list
         data_list = req.json()
@@ -68,15 +84,21 @@ class UpcomingLaunches(APIView):
         return Response(newData)
 
 
+
 class PastLaunches(APIView):
 
     def get(self, format=None):
 
-        # Request from SPACEX API
-        req = requests.get(url.format("past"))
+        try:
+            # Request from SPACEX API
+            req = requests.get(url.format("past"))
 
-        if req.status_code > 500:
-            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if req.status_code > 500:
+                return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except Exception as e:
+            print(e)
+            return Response({"message":"Could'nt connect to SPACEX API Servers", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a list
         data_list = req.json()
@@ -93,14 +115,20 @@ class PastLaunches(APIView):
 class OneLaunch(APIView):
 
     def get(self, request, pk, format=None):
-        # Request from SPACEX API
-        req = requests.get(url.format(pk))
 
-        if req.status_code == 404:
-            return Response({"message":"Could'nt find any launch!", "success":False}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            # Request from SPACEX API
+            req = requests.get(url.format(pk))
 
-        if req.status_code > 500:
-            return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            if req.status_code == 404:
+                return Response({"message":"Could'nt find any launch!", "success":False}, status=status.HTTP_404_NOT_FOUND)
+
+            if req.status_code > 500:
+                return Response({"message":"SPACEX API Error!", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        except Exception as e:
+            print(e)
+            return Response({"message":"Could'nt connect to SPACEX API Servers", "success":False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # Parse JSON to a dict
         data = req.json()
