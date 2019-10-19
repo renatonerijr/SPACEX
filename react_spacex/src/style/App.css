@@ -3,7 +3,44 @@ h1, p {
     font-family: 'Roboto', sans-serif;
 }
 
-img{
-    width: 100px;
-    height: 100px;
+h1 {
+    font-size: 12px;
+}
+
+p {
+    font-size: 10px;
+}
+
+.stages {
+    padding: 1rem;
+}
+
+.details {
+    font-size: 8px !important;
+}
+
+.mission-report {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.mission-report h1{
+    padding-top: 1rem;
+    font-size: 16px !important;
+}
+
+
+.rocket-img{
+    border-radius: 50%;
+    width: 30vw;
+    height: 60vh;
+}
+
+.mission-patch{
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    width: 10vw;
+    height: 20vh;
 }

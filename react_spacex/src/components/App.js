@@ -8,17 +8,22 @@ class App extends React.Component {
             super(props)
             this.state = {
                 info: null,
+                flight_number: 0,
+                is_upcoming: false
             }
 
         }
 
-        fetchLatest(){
-            const url = 'http://127.0.0.1:8000/launches/latest';
+        fetchFromAPI(slug){
+            const url = 'http://127.0.0.1:8000/launches/'+slug;
             fetch(url, {method: 'GET', contenttypes: 'application/json'})
                 .then(response => response.json())
                 .then(jsonResponse => {
                     console.log(jsonResponse)
-                    this.setState({info: jsonResponse})
+                    this.setState({
+                        info: jsonResponse,
+                        flight_number: jsonResponse.flight_number
+                    })
                 })
                 .catch(err => {
                     console.log(err)
@@ -26,72 +31,54 @@ class App extends React.Component {
         }
 
         componentDidMount() {
-            this.fetchLatest()
+            this.fetchFromAPI('latest')
         }
 
 
         render() {
             return (
-                <div className="container">
+                <div className="container-fluid">
                     { this.state.info &&
                     <div className="row">
 
-                        <div className="col-sm">
+                        <div className="col-4 stages">
 
-                            <div>
                                 <h1>Mission Name</h1>
                                 <p>{this.state.info.mission_name}</p>
-                            </div>
 
-                            <div>
                                 <h1>Launch Year</h1>
                                 <p>{this.state.info.launch_year}</p>
-                            </div>
 
-                            <div>
                                 <h1>Launch Date</h1>
                                 <p>{this.state.info.launch_date_utc}</p>
-                            </div>
 
-
-                            <div>
                                 <h1>Details</h1>
-                                <p>{this.state.info.details}</p>
-                            </div>
+                                <p className="details">{this.state.info.details}</p>
 
-
-                            <div>
                                 <h1>Reused?</h1>
                                 {this.state.info.launch_success != null ?
                                     <p>{this.state.info.rocket.first_stage.is_reused ? "Yes" : "No" }</p>
                                     :
                                     <p>N/A</p>
                                 }
-                            </div>
 
-
-                            <div>
                                 <h1>Land Success</h1>
                                 {this.state.info.launch_success != null ?
                                     <p>{this.state.info.launch_success ? "Yes" : "No" }</p>
                                     :
                                     <p>N/A</p>
                                 }
-                            </div>
 
-
-                            <div>
                                 <h1>Landing Intent</h1>
                                 {this.state.info.launch_success != null ?
                                     <p>{this.state.info.rocket.first_stage.landing_intent ? "Yes" : "No" }</p>
                                     :
                                     <p>N/A</p>
                                 }
-                            </div>
 
                         </div>
 
-                        <div className="col-sm">
+                        <div className="col stages">
 
                             <div>
                                 <h1>Costumers</h1>
@@ -119,29 +106,27 @@ class App extends React.Component {
 
                             <div>
                                 <h1>Flight Number</h1>
-                                <button>aa</button>
-                                <input/>
-                                <button>aa</button>
+                                <input type="number" value={this.state.flight_number}/>
                             </div>
                         </div>
 
-                        <div className="col-sm">
+                        <div className="col mission-report">
                             <div>
                                 <h1>Rocket</h1>
                                 <p>{this.state.info.rocket.first_stage.rocket_name}</p>
                             </div>
-                            <img src={this.state.info.imgs[0]} alt="Rocket"/>
-                            <img src={this.state.info.img_mission_patch} alt="Patch"/>
+                            <img className="rocket-img" src={this.state.info.imgs[0]} alt="Rocket"/>
+                            <img className="mission-patch" src={this.state.info.img_mission_patch} alt="Patch"/>
                             <div>
                                 <h1>Launch Site</h1>
                                 <p>{this.state.info.launch_site}</p>
                             </div>
                             <div>
-                                <a href="#">
+                                <a href="last" style={{ textDecoration: !this.state.is_upcoming ? 'underline' : 'none' }} >
                                     Last Missions
                                 </a>
                                 <span> | </span>
-                                <a href="#">
+                                <a href="next" style={{ textDecoration: this.state.is_upcoming ? 'underline' : 'none' }}>
                                     Next Missions
                                 </a>
                             </div>
@@ -149,10 +134,6 @@ class App extends React.Component {
 
                     </div>
                     }
-
-
-
-
 
                 </div>
             );
