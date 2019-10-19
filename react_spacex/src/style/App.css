@@ -3,6 +3,10 @@ h1, p {
     font-family: 'Roboto', sans-serif;
 }
 
+i {
+    cursor: pointer;
+}
+
 h1 {
     font-size: 12px;
 }
@@ -17,6 +21,23 @@ p {
 
 .details {
     font-size: 8px !important;
+}
+
+.flight_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.flight_selector {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+.flight_selector input {
+    width: 30px;
 }
 
 .mission-report {
