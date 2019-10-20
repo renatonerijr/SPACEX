@@ -8,11 +8,11 @@ i {
 }
 
 h1 {
-    font-size: 12px;
+    font-size: 22px;
 }
 
 p {
-    font-size: 10px;
+    font-size: 16px;
 }
 
 .stages {
@@ -20,7 +20,7 @@ p {
 }
 
 .details {
-    font-size: 8px !important;
+    font-size: 10px !important;
 }
 
 .flight_div {
@@ -37,7 +37,7 @@ p {
 }
 
 .flight_selector input {
-    width: 30px;
+    width: 40px;
 }
 
 .mission-report {
@@ -46,22 +46,27 @@ p {
     text-align: center;
 }
 
+
 .mission-report h1{
     padding-top: 1rem;
-    font-size: 16px !important;
+    font-size: 24px !important;
 }
 
+.mission-report p{
+    font-size: 18px !important;
+}
 
 .rocket-img{
     border-radius: 50%;
-    width: 30vw;
-    height: 60vh;
+    width: 350px;
+    height: 350px;
+    margin: auto;
 }
 
 .mission-patch{
-    border-radius: 50%;
     position: absolute;
     top: 50%;
-    width: 10vw;
-    height: 20vh;
+    right:60%;
+    width: 150px;
+    height: 150px;
 }

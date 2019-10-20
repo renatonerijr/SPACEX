@@ -18,17 +18,19 @@ class App extends React.Component {
             this.handleInputClickDown = this.handleInputClickDown.bind(this)
 
         }
-
+        //ISSUE: Raise error when flight number does not exist
         fetchFromAPI(slug){
             const url = 'http://127.0.0.1:8000/launches/'+slug;
             fetch(url, {method: 'GET', contenttypes: 'application/json'})
                 .then(response => response.json())
                 .then(jsonResponse => {
                     console.log(jsonResponse)
-                    this.setState({
-                        info: jsonResponse,
-                        flight_number: jsonResponse.flight_number
-                    })
+                        this.setState({
+                            info: jsonResponse,
+                            flight_number: jsonResponse.flight_number
+                        })
+
+
                 })
                 .catch(err => {
                     console.log(err)
@@ -87,7 +89,7 @@ class App extends React.Component {
                     { this.state.info &&
                     <div className="row">
 
-                        <div className="col-4 stages">
+                        <div className="col stages">
 
                                 <h1>Mission Name</h1>
                                 <p>{this.state.info.mission_name}</p>
@@ -160,7 +162,7 @@ class App extends React.Component {
                             </div>
                         </div>
 
-                        <div className="col mission-report">
+                        <div className="col-md-4 col-sm-12 order-sm-first order-first order-md-last mission-report">
 
                             <div>
                                 <h1>Rocket</h1>
@@ -175,6 +177,7 @@ class App extends React.Component {
                             <img
                                 className="mission-patch"
                                 src={this.state.info.img_mission_patch ? this.state.info.img_mission_patch : "https://via.placeholder.com/1000?text=N/A"}
+                                style={{ borderRadius: !this.state.info.img_mission_patch ? '50%' : '0%' }}
                                 alt="Patch"
                             />
 
