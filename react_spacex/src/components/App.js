@@ -25,12 +25,15 @@ class App extends React.Component {
                 .then(response => response.json())
                 .then(jsonResponse => {
                     console.log(jsonResponse)
-                        this.setState({
-                            info: jsonResponse,
-                            flight_number: jsonResponse.flight_number
-                        })
 
+                    if (jsonResponse.success === false){
+                        return
+                    }
 
+                    this.setState({
+                        info: jsonResponse,
+                        flight_number: jsonResponse.flight_number
+                    })
                 })
                 .catch(err => {
                     console.log(err)
@@ -60,9 +63,7 @@ class App extends React.Component {
         handleInputClickUp(){
             this.setState(prevState => {
                 return {
-                    flight_number: prevState.flight_number + 1,
-                    info: prevState.info,
-                    is_upcoming: prevState.is_upcoming
+                    flight_number: prevState.flight_number + 1
                 }
             })
             this.fetchFromAPI(this.state.flight_number+1)
