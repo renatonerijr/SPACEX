@@ -79,6 +79,17 @@ class App extends React.Component {
             this.fetchFromAPI(this.state.flight_number-1)
         }
 
+        formatLaunchDateUTC(date){
+            let newDate = new Date(date)
+            var dd = String(newDate.getDate()).padStart(2, '0');
+            var mm = String(newDate.getMonth() + 1).padStart(2, '0');
+            var yyyy = newDate.getFullYear();
+            var minutes = (newDate.getMinutes() < 10 ? '0' : 0) + newDate.getMinutes()
+            var hours = (newDate.getHours() < 10 ? '0' : 0) + newDate.getHours()
+
+            return dd + "/" + mm + "/" + yyyy + " - " + hours + ":" + minutes
+        }
+
         componentDidMount() {
             this.fetchFromAPI('latest')
         }
@@ -99,7 +110,7 @@ class App extends React.Component {
                                 <p>{this.state.info.launch_year}</p>
 
                                 <h1>Launch Date</h1>
-                                <p>{this.state.info.launch_date_utc}</p>
+                                <p>{this.formatLaunchDateUTC(this.state.info.launch_date_utc)}</p>
 
                                 <h1>Details</h1>
                                 <p className="details">{this.state.info.details}</p>
