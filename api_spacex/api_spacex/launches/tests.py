@@ -10,6 +10,7 @@ class LaunchTests(APITestCase):
 
         url = reverse('launch-latest')
         response = self.client.get(url, format='json')
+        print(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 

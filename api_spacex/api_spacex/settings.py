@@ -25,8 +25,8 @@ SECRET_KEY = '9asfkumy%oqji*q)*xcj8yb3tuey%5)vptueykawc%@p(&7^jf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
+CORS_ALLOWED_ORIGINS = ["*"]
 
 # Application definition
 
@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
+    "http://localhost:3001",
 ]
 
 ROOT_URLCONF = 'api_spacex.urls'

@@ -21,7 +21,12 @@ class App extends React.Component {
         //ISSUE: Raise error when flight number does not exist
         fetchFromAPI(slug){
             const url = 'http://127.0.0.1:8000/launches/'+slug;
-            fetch(url, {method: 'GET', contenttypes: 'application/json'})
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => response.json())
                 .then(jsonResponse => {
                     console.log(jsonResponse)
@@ -142,7 +147,10 @@ class App extends React.Component {
 
                             <div>
                                 <h1>Costumers</h1>
-                                <p>{this.state.info.rocket.second_stage.costumers.join(", ")}</p>
+                                <p>
+                                {
+                                    this.state.info.rocket.second_stage.costumers
+                                }</p>
                             </div>
 
                             <div>

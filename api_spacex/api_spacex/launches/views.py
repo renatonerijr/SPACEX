@@ -6,7 +6,9 @@ from rest_framework import status
 import requests
 import io
 
-url = 'https://api.spacexdata.com/v3/launches/{}'
+# Use v5 for latest 
+
+url = 'https://api.spacexdata.com/v5/launches/{}'
 
 class LatestLaunch(APIView):
 
@@ -25,7 +27,7 @@ class LatestLaunch(APIView):
 
         # Parse JSON to a dict
         data = req.json()
-        newData = FilterAPI().filterJson(data)
+        newData = FilterAPIV5().filterJson(data)
 
         #Return data
         return Response(newData)
@@ -50,7 +52,7 @@ class NextLaunch(APIView):
         data = req.json()
 
         # Filter JSON with specific info
-        newData = FilterAPI().filterJson(data)
+        newData = FilterAPIV5().filterJson(data)
 
         #Return data
         return Response(newData)
@@ -78,7 +80,7 @@ class UpcomingLaunches(APIView):
 
         # Filter JSON with specific info
         for data in data_list:
-            newData.append(FilterAPI().filterJson(data))
+            newData.append(FilterAPIV5().filterJson(data))
 
         #Return data
         return Response(newData)
@@ -106,7 +108,7 @@ class PastLaunches(APIView):
 
         # Filter JSON with specific info
         for data in data_list:
-            newData.append(FilterAPI().filterJson(data))
+            newData.append(FilterAPIV5().filterJson(data))
 
         #Return data
         return Response(newData)
@@ -118,6 +120,8 @@ class OneLaunch(APIView):
 
         try:
             # Request from SPACEX API
+            # Use v3 for retrocompability
+            url = 'https://api.spacexdata.com/v3/launches/{}'
             req = requests.get(url.format(pk))
 
             if req.status_code == 404:
@@ -134,24 +138,31 @@ class OneLaunch(APIView):
         data = req.json()
 
         # Filter JSON with specific info
-        newData = FilterAPI().filterJson(data)
+        newData = FilterAPIV5().filterJson(data)
 
         #Return data
         return Response(newData)
 
 
-class FilterAPI():
+
+class FilterAPIV5():
 
     def filterJson(self, data):
         # Create a new dict with specific info from mission
         rocket = data["rocket"]
-        first_stage = rocket["first_stage"]["cores"][0]
-        second_stage = rocket["second_stage"]["payloads"][0]
+        if isinstance(rocket, dict):
+            first_stage = rocket["first_stage"]["cores"][0] 
+            second_stage = rocket["second_stage"]["payloads"][0]
+        else:
+            rocket = {"rocket_name": "N/A"}
+            first_stage = {"reused": "N/A", "land_success": "N/A", "landing_intent": "N/A"}
+            second_stage = {"customers": "N/A", "nationality": "N/A", "manufacturer": "N/A"}
+
         newData = {
-                    "mission_name": data["mission_name"],
-                    "flight_number": data["flight_number"],
-                    "launch_year": data["launch_year"],
-                    "launch_date_utc": data["launch_date_utc"],
+                    "mission_name": data["mission_name"] if "mission_name" in data else "N/A",
+                    "flight_number": data["flight_number"] if "flight_number" in data else "N/A",
+                    "launch_year": data["launch_year"] if "launch_year" in data else "N/A",
+                    "launch_date_utc": data["launch_date_utc"] if "launch_date_utc" in data else "N/A",
                     "rocket": {
                         "first_stage":{
                             "rocket_name": rocket["rocket_name"],
@@ -165,12 +176,12 @@ class FilterAPI():
                             "manufacturer": second_stage["manufacturer"]
                         }
                     },
-                    "launch_success": data["launch_success"],
-                    "launch_site": data["launch_site"]["site_name_long"],
-                    "imgs": data["links"]["flickr_images"],
-                    "img_mission_patch": data["links"]["mission_patch"],
-                    "video_link": data["links"]["video_link"],
-                    "reddit_link": data["links"]["reddit_campaign"],
+                    "launch_success": data["launch_success"] if "launch_success" in data else "N/A",
+                    "launch_site": data["launch_site"]["site_name_long"] if "launch_site" in data else "N/A",
+                    "imgs": data["links"]["flickr_images"] if "flickr_images" in data["links"] else "N/A",
+                    "img_mission_patch": data["links"]["mission_patch"] if "mission_patch" in data["links"] else "N/A",
+                    "video_link": data["links"]["video_link"] if "video_link" in data["links"] else "N/A",
+                    "reddit_link": data["links"]["reddit_campaign"] if "reddit_campaign" in data["links"] else "N/A",
                     "details": data["details"]
                   }
         return newData
